@@ -56,18 +56,23 @@ public class SpellBehaviorEditor : Editor
         }
 
         GUILayout.BeginHorizontal();
-        GUILayout.Label("Spell Name", GUILayout.Width(75));
+        GUILayout.Label("Spell Name", GUILayout.Width(80));
         _spellBehavior.spellName = GUILayout.TextField(_spellBehavior.spellName);
         GUILayout.EndHorizontal();
 
         GUILayout.BeginHorizontal();
-        GUILayout.Label("Spell Icon", GUILayout.Width(75));
+        GUILayout.Label("Spell Icon", GUILayout.Width(80));
         _spellBehavior.spellIcon = (Sprite)EditorGUILayout.ObjectField(_spellBehavior.spellIcon, typeof(Sprite), false, null);
         GUILayout.EndHorizontal();
 
         GUILayout.BeginHorizontal();
-        GUILayout.Label("Icon Color", GUILayout.Width(75));
+        GUILayout.Label("Icon Color", GUILayout.Width(80));
         _spellBehavior.iconColor = EditorGUILayout.ColorField(_spellBehavior.iconColor);
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Typed Inputs", GUILayout.Width(80));
+        _spellBehavior.typedInputs = EditorGUILayout.Toggle(_spellBehavior.typedInputs);
         GUILayout.EndHorizontal();
 
         string[] methodNames = new string[AllSpellMethods.Length];

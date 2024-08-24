@@ -9,6 +9,7 @@ public class SpellBehavior : ScriptableObject
     public Sprite spellIcon;
     public Color iconColor;
     public MethodInfo methodInfo;
+    public bool typedInputs;
 
     private string methodName = string.Empty;
     private string fullMethodClassName = string.Empty;

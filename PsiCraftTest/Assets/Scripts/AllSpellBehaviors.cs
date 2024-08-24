@@ -17,4 +17,9 @@ public static class AllSpellBehaviors
     {
         return gameObject.transform.forward;
     }
+
+    public static float GetConstant(float constant)
+    {
+        return constant;
+    }
 }

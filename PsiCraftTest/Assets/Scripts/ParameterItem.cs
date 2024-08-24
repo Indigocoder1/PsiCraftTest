@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class ParameterItem : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI nameText;
+    [SerializeField] private TMP_InputField paramInputField;
     [SerializeField] private Color normalColor;
     [SerializeField] private Color selectedColor;
     [SerializeField] private Transform selectorsParent;
@@ -15,6 +16,9 @@ public class ParameterItem : MonoBehaviour
 
     private SpellItem spellItem;
     private bool setPreviousSelector;
+    private float typedParamValue;
+
+    private Coroutine previousCoroutine;
 
     public void SetParameter(string name, Type type, bool hasDefault, SpellItem spellItem)
     {
@@ -27,7 +31,11 @@ public class ParameterItem : MonoBehaviour
         if(hasDefault)
         {
             StartCoroutine(SelectDefault());
-        } 
+        }
+
+        bool hasTypedInputs = spellItem.GetSpellBehavior().typedInputs;
+        selectorsParent.gameObject.SetActive(!hasTypedInputs);
+        paramInputField.gameObject.SetActive(hasTypedInputs);
     }
 
     public void SelectCell(Image selector)
@@ -57,6 +65,24 @@ public class ParameterItem : MonoBehaviour
         SelectCell(selector.GetComponent<Image>());
 
         setPreviousSelector = true;
+    }
+
+    public void OnParamInputChanged(string input)
+    {
+        if(previousCoroutine != null)
+        {
+            StopCoroutine(previousCoroutine);
+        }
+
+        previousCoroutine = StartCoroutine(CacheParamValDelayed(input));
+    }
+
+    private IEnumerator CacheParamValDelayed(string value)
+    {
+        yield return new WaitForSeconds(0.2f);
+
+        typedParamValue = float.Parse(value);
+        spellItem.SetParameterValue(transform.GetSiblingIndex(), typedParamValue);
     }
 
     private IEnumerator SelectDefault()

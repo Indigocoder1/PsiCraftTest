@@ -93,6 +93,12 @@ public class SpellHandler : MonoBehaviour
                 continue;
             }
 
+            if(spell.GetSpellBehavior().typedInputs)
+            {
+                parameters[i] = spell.GetParameterValues()[i];
+                continue;
+            }
+
             if (offsets[i] == Vector2Int.zero)
             {
                 Debug.LogError($"No input tile set on position {spellPos}");

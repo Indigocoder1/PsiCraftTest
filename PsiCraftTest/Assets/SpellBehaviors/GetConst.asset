@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 352ec0b885fc58d43b4f9ce5ad157fc6, type: 3}
-  m_Name: GetLookDir
+  m_Name: GetConst
   m_EditorClassIdentifier: 
-  spellName: Get Look Dir
-  spellIcon: {fileID: 21300000, guid: 792b1e43ed80d3142ba35d5391ad6c28, type: 3}
+  spellName: Get Constant
+  spellIcon: {fileID: 21300000, guid: d52b6aeb18b38f54da90a6123949b500, type: 3}
   iconColor: {r: 0.5568628, g: 0.69411767, b: 0.81960785, a: 1}
-  allowsTypedInputs: 0
+  typedInputs: 1

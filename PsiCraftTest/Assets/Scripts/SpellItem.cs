@@ -10,6 +10,7 @@ public class SpellItem : MonoBehaviour
 
     private SpellBehavior behavior;
     private Dictionary<int, Vector2Int> parameterGridOffsets = new();
+    private Dictionary<int, float> parameterValues = new();
 
     public void OpenSelectorMenu()
     {
@@ -74,6 +75,7 @@ public class SpellItem : MonoBehaviour
         for (int i = 0; i < behavior.GetMethodInfo().GetParameters().Length; i++)
         {
             parameterGridOffsets.Add(i, Vector2Int.zero);
+            parameterValues.Add(i, 0);
         }
     }
 
@@ -88,8 +90,24 @@ public class SpellItem : MonoBehaviour
         parameterGridOffsets[index] = offset;
     }
 
+    public void SetParameterValue(int index, float value)
+    {
+        if (!parameterValues.ContainsKey(index))
+        {
+            parameterValues.Add(index, value);
+            return;
+        }
+
+        parameterValues[index] = value;
+    }
+
     public Dictionary<int, Vector2Int> GetParamOffsets()
     {
         return parameterGridOffsets;
+    }
+
+    public Dictionary<int, float> GetParameterValues()
+    {
+        return parameterValues;
     }
 }
