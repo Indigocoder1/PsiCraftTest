@@ -8,13 +8,19 @@ public class SpellBehavior : ScriptableObject
     public string spellName;
     public Sprite spellIcon;
     public Color iconColor;
-    public string methodName = string.Empty;
-    public string fullMethodClassName = string.Empty;
+    public MethodInfo methodInfo;
+
+    private string methodName = string.Empty;
+    private string fullMethodClassName = string.Empty;
 
     public MethodInfo GetMethodInfo()
     {
+        if (methodInfo != null) return methodInfo;
+
         Type type = Type.GetType(fullMethodClassName);
-        return type.GetMethod(methodName, BindingFlags.Public | BindingFlags.Static);
+        methodInfo = type.GetMethod(methodName, BindingFlags.Public | BindingFlags.Static);
+
+        return methodInfo;
     }
 
     public bool MethodHasReturn()

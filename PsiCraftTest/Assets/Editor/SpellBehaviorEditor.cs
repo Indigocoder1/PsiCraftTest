@@ -30,6 +30,9 @@ public class SpellBehaviorEditor : Editor
     private AdvancedStringOptionsDropdown _dropdown;
     private SpellBehavior _spellBehavior;
 
+    private FieldInfo _methodNameProperty;
+    private FieldInfo _fullMethodClassNameProperty;
+
     private void Awake()
     {
         CompilationPipeline.assemblyCompilationFinished += (_, __) =>
@@ -41,6 +44,16 @@ public class SpellBehaviorEditor : Editor
     public override void OnInspectorGUI()
     {
         _spellBehavior = (SpellBehavior)target;
+
+        if(_methodNameProperty == null)
+        {
+            _methodNameProperty = typeof(SpellBehavior).GetField("methodName", BindingFlags.NonPublic | BindingFlags.Instance);
+        }
+
+        if (_fullMethodClassNameProperty == null)
+        {
+            _fullMethodClassNameProperty = typeof(SpellBehavior).GetField("fullMethodClassName", BindingFlags.NonPublic | BindingFlags.Instance);
+        }
 
         GUILayout.BeginHorizontal();
         GUILayout.Label("Spell Name", GUILayout.Width(75));
@@ -66,11 +79,11 @@ public class SpellBehaviorEditor : Editor
         _dropdown = new(methodNames);
         _dropdown.OnOptionSelected += index =>
         {
-            _spellBehavior.methodName = AllSpellMethods[index].Name;
-            _spellBehavior.fullMethodClassName = typeof(AllSpellBehaviors).FullName;
+            _methodNameProperty.SetValue(_spellBehavior, AllSpellMethods[index].Name);
+            _fullMethodClassNameProperty.SetValue(_spellBehavior, typeof(AllSpellBehaviors).FullName);
         };
 
-        string methodName = _spellBehavior.methodName != string.Empty ? _spellBehavior.methodName : "None";
+        string methodName = (string)_methodNameProperty.GetValue(_spellBehavior) != string.Empty ? (string)_methodNameProperty.GetValue(_spellBehavior) : "None";
 
         GUIContent content = new GUIContent()
         {
@@ -85,6 +98,7 @@ public class SpellBehaviorEditor : Editor
             _dropdown.Show(rect);
         }
 
+        serializedObject.ApplyModifiedProperties();
         EditorUtility.SetDirty(_spellBehavior);
     }
 }
