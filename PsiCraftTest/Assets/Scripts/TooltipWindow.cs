@@ -25,6 +25,8 @@ public class TooltipWindow : MonoBehaviour
 
     public void SelectBehavior(UIBehaviorItem behaviorItem)
     {
+        if (currentSpellItem == null) return;
+
         currentSpellItem.SetSpellBehavior(behaviorItem.GetSpellBehavior());
     }
 }
