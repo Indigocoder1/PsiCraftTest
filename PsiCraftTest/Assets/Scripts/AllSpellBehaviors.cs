@@ -22,4 +22,9 @@ public static class AllSpellBehaviors
     {
         return constant;
     }
+
+    public static Vector3 CreateVector(float x, float y, float z)
+    {
+        return new Vector3(x, y, z);
+    }
 }

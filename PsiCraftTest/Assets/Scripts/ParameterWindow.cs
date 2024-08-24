@@ -1,5 +1,8 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ParameterWindow : MonoBehaviour
@@ -22,21 +25,33 @@ public class ParameterWindow : MonoBehaviour
 
     public void SetTargetMethod(MethodInfo methodInfo, SpellItem spellItem)
     {
-        foreach (Transform child in parametersParent)
+        StartCoroutine(SpawnItems(methodInfo, spellItem));
+    }
+
+    private IEnumerator SpawnItems(MethodInfo methodInfo, SpellItem spellItem)
+    {
+        for (int i = 0; i < parametersParent.childCount; i++)
         {
-            DestroyImmediate(child.gameObject);
+            Destroy(parametersParent.GetChild(i).gameObject);
         }
+
+        Dictionary<ParameterItem, ParameterInfo> items = new();
 
         foreach (var parameterInfo in methodInfo.GetParameters())
         {
             var item = Instantiate(parameterPrefab, parametersParent).GetComponent<ParameterItem>();
-
             item.SetParameter(parameterInfo.Name, parameterInfo.ParameterType, parameterInfo.DefaultValue != DBNull.Value, spellItem);
+            items.Add(item, parameterInfo);
         }
 
-        foreach (var item in parametersParent.GetComponentsInChildren<ParameterItem>())
+        yield return new WaitForEndOfFrame();
+
+        foreach (var item in items)
         {
-            item.SetSelectedSelector();
+            var paramItem = item.Key;
+            var info = item.Value;
+            
+            paramItem.SetupItemDelayed();
         }
     }
 }

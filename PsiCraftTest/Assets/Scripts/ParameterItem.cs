@@ -4,6 +4,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.VFX;
 
 public class ParameterItem : MonoBehaviour
 {
@@ -50,10 +51,16 @@ public class ParameterItem : MonoBehaviour
         spellItem.SetParamOffset(transform.GetSiblingIndex(), selector.GetComponent<ParameterGridOffset>().GetOffset());
     }
 
-    public void SetSelectedSelector()
+    public void SetupItemDelayed()
     {
         if (spellItem == null) return;
 
+        SetPreviousSelection();
+        SetInputValue();
+    }
+
+    private void SetPreviousSelection()
+    {
         var offsets = spellItem.GetParamOffsets();
         if (offsets == null) return;
 
@@ -65,6 +72,15 @@ public class ParameterItem : MonoBehaviour
         SelectCell(selector.GetComponent<Image>());
 
         setPreviousSelector = true;
+    }
+
+    private void SetInputValue()
+    {
+        var paramValues = spellItem.GetParameterValues();
+
+        if (!paramValues.TryGetValue(transform.GetSiblingIndex(), out float value)) return;
+
+        paramInputField.text = value.ToString();
     }
 
     public void OnParamInputChanged(string input)
