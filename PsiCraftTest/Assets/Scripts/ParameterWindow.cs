@@ -12,6 +12,8 @@ public class ParameterWindow : MonoBehaviour
     [SerializeField] private GameObject parameterPrefab;
     [SerializeField] private Transform parametersParent;
 
+    private SpellItem currentSpellItem;
+
     private void Awake()
     {
         if (Instance != null)
@@ -23,16 +25,34 @@ public class ParameterWindow : MonoBehaviour
         Instance = this;
     }
 
+    private void Update()
+    {
+        if (!Input.GetKeyDown(KeyCode.Backspace)) return;
+
+        if (currentSpellItem == null) return;
+
+        currentSpellItem.ClearBehavior();
+
+        foreach (Transform child in parametersParent)
+        {
+            Destroy(child.gameObject);
+        }
+
+        currentSpellItem = null;
+    }
+
     public void SetTargetMethod(MethodInfo methodInfo, SpellItem spellItem)
     {
+        currentSpellItem = spellItem;
+
         StartCoroutine(SpawnItems(methodInfo, spellItem));
     }
 
     private IEnumerator SpawnItems(MethodInfo methodInfo, SpellItem spellItem)
     {
-        for (int i = 0; i < parametersParent.childCount; i++)
+        foreach (Transform child in parametersParent)
         {
-            Destroy(parametersParent.GetChild(i).gameObject);
+            Destroy(child.gameObject);
         }
 
         Dictionary<ParameterItem, ParameterInfo> items = new();

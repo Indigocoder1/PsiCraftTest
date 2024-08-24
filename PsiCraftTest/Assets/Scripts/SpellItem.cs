@@ -110,4 +110,14 @@ public class SpellItem : MonoBehaviour
     {
         return parameterValues;
     }
+
+    public void ClearBehavior()
+    {
+        behavior = null;
+        icon.sprite = null;
+        icon.color = Color.white;
+
+        parameterGridOffsets.Clear();
+        parameterValues.Clear();
+    }
 }
