@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 using UnityEngine;
 
@@ -7,11 +8,13 @@ public class SpellBehavior : ScriptableObject
     public string spellName;
     public Sprite spellIcon;
     public Color iconColor;
-    public int methodIndex;
+    public string methodName = string.Empty;
+    public string fullMethodClassName = string.Empty;
 
     public MethodInfo GetMethodInfo()
     {
-        return SpellsManager.AllSpellMethods[methodIndex];
+        Type type = Type.GetType(fullMethodClassName);
+        return type.GetMethod(methodName, BindingFlags.Public | BindingFlags.Static);
     }
 
     public bool MethodHasReturn()

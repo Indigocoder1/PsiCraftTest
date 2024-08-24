@@ -30,7 +30,7 @@ public class SpellItem : MonoBehaviour
 
         if (behavior == null) return;
 
-        ParameterWindow.Instance.SetTargetMethod(SpellsManager.AllSpellMethods[behavior.methodIndex], this);
+        ParameterWindow.Instance.SetTargetMethod(behavior.GetMethodInfo(), this);
     }
 
     private void HandleSpellSelection()

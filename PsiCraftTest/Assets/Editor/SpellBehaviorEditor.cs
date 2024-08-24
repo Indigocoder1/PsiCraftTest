@@ -66,12 +66,15 @@ public class SpellBehaviorEditor : Editor
         _dropdown = new(methodNames);
         _dropdown.OnOptionSelected += index =>
         {
-            _spellBehavior.methodIndex = index;
+            _spellBehavior.methodName = AllSpellMethods[index].Name;
+            _spellBehavior.fullMethodClassName = typeof(AllSpellBehaviors).FullName;
         };
+
+        string methodName = _spellBehavior.methodName != string.Empty ? _spellBehavior.methodName : "None";
 
         GUIContent content = new GUIContent()
         {
-            text = $"Method: {methodNames[_spellBehavior.methodIndex]}"
+            text = $"Method: {methodName}"
         };
         GUIStyle style = new();
 
